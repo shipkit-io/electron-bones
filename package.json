@@ -349,10 +349,6 @@
 			"repo": "electron-hotplate"
 		}
 	},
-	"devEngines": {
-		"node": ">=14.x",
-		"npm": ">=7.x"
-	},
 	"electronmon": {
 		"patterns": [
 			"!**/**",
@@ -360,6 +356,10 @@
 			".erb/dll/**"
 		],
 		"logLevel": "quiet"
+	},
+	"engines": {
+		"node": ">=14.x",
+		"npm": ">=7.x"
 	},
 	"optionalDependencies": {
 		"dmg-license": "^1.0.11"
