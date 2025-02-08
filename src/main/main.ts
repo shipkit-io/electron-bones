@@ -38,9 +38,9 @@ app
 startup();
 
 // Fix the icon loading issue
-const iconPath = path.join(__dirname, '..', '..', 'assets', 'icons', 'icon.ico');
+const iconPath = path.join(__dirname, '..', '..', 'assets', 'icon.ico');
 app.whenReady().then(() => {
-  // Set the app icon here
+	// Set the app icon here
 });
 
 // See the idle() function in src/main/startup.ts

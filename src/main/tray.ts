@@ -19,7 +19,7 @@ const systemIcon = () => {
 };
 
 const getIconPath = () => {
-	return path.join(__assets, 'icons', systemIcon());
+	return path.join(__assets, systemIcon());
 };
 
 const initialize = () => {
