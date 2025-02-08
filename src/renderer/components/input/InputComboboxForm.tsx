@@ -120,7 +120,6 @@ export function InputComboboxForm({
 																form.setValue('itemValue', item.value);
 																onSubmit({ itemValue: item.value });
 															}}
-															className="cursor-pointer"
 														>
 															<Check
 																className={cn(
