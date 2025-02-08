@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // Component for the main window of the Electron Hotplate demo
-const MainApp: React.FC = () => {
+export default function MainApp() {
 	const [message, setMessage] = useState<string>('');
 
 	useEffect(() => {
@@ -36,6 +36,4 @@ const MainApp: React.FC = () => {
 			</div>
 		</div>
 	);
-};
-
-export default MainApp;
+}

@@ -1,16 +1,16 @@
 {
-	"name": "electron-hotplate",
+	"name": "electron-bones",
 	"version": "4.6.0",
 	"description": "A batteries-included Electron boilerplate.",
 	"license": "CC-BY-NC-SA-4.0",
-	"homepage": "https://lacymorrow.github.io/electron-hotplate",
+	"homepage": "https://lacymorrow.github.io/electron-bones",
 	"author": {
 		"name": "Lacy Morrow",
 		"email": "me@lacymorrow.com",
-		"url": "https://github.com/lacymorrow/electron-hotplate"
+		"url": "https://github.com/lacymorrow/electron-bones"
 	},
 	"bugs": {
-		"url": "https://github.com/lacymorrow/electron-hotplate/issues",
+		"url": "https://github.com/lacymorrow/electron-bones/issues",
 		"email": "me@lacymorrow.com"
 	},
 	"main": "./dist/main/main.js",

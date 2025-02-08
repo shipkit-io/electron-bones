@@ -1,13 +1,13 @@
 {
-	"name": "electron-hotplate",
-	"productName": "Electron Hotplate",
-	"appId": "com.lacymorrow.hotplate",
+	"name": "electron-bones",
+	"productName": "Electron Bones",
+	"appId": "com.lacymorrow.bones",
 	"version": "4.6.0",
 	"description": "A batteries-included Electron boilerplate.",
 	"license": "CC-BY-NC-SA-4.0",
 	"copyright": "Copyright © Lacy Morrow",
-	"repository": "lacymorrow/electron-hotplate",
-	"homepage": "https://lacymorrow.github.io/electron-hotplate",
+	"repository": "lacymorrow/electron-bones",
+	"homepage": "https://lacymorrow.github.io/electron-bones",
 	"keywords": [
 		"electron",
 		"boilerplate",
@@ -20,7 +20,7 @@
 		"reload"
 	],
 	"bugs": {
-		"url": "https://github.com/lacymorrow/electron-hotplate/issues",
+		"url": "https://github.com/lacymorrow/electron-bones/issues",
 		"email": "me@lacymorrow.com"
 	},
 	"author": {
@@ -255,8 +255,8 @@
 		"webpack-merge": "^6.0.1"
 	},
 	"build": {
-		"productName": "Electron Hotplate",
-		"appId": "com.lacymorrow.hotplate",
+		"productName": "Electron Bones",
+		"appId": "com.lacymorrow.bones",
 		"asar": true,
 		"asarUnpack": "**\\*.{node,dll}",
 		"files": [
@@ -314,14 +314,14 @@
 		"nsis": {
 			"unicode": false,
 			"artifactName": "${productName}-${version}.${ext}",
-			"uninstallDisplayName": "Electron Hotplate"
+			"uninstallDisplayName": "Electron Bones"
 		},
 		"appx": {
-			"applicationId": "ElectronHotplate",
+			"applicationId": "ElectronBones",
 			"artifactName": "${productName}.${ext}",
-			"backgroundColor": "#5500ff",
-			"displayName": "Electron Hotplate",
-			"identityName": "2886Fly5.ElectronHotplate",
+			"backgroundColor": "#464646",
+			"displayName": "Electron Bones",
+			"identityName": "2886Fly5.ElectronBones",
 			"publisher": "CN=C53C0091-1EEB-40B4-8537-082E06A4D328",
 			"publisherDisplayName": "Fly5",
 			"showNameOnTiles": true
@@ -360,7 +360,7 @@
 		"publish": {
 			"provider": "github",
 			"owner": "lacymorrow",
-			"repo": "electron-hotplate"
+			"repo": "electron-bones"
 		}
 	},
 	"electronmon": {

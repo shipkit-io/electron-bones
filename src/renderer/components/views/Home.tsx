@@ -22,7 +22,7 @@ export function Home() {
 				alt="logo"
 			/>
 
-			<h1 className="text-3xl font-bold">Welcome to Electron Hotplate</h1>
+			<h1 className="text-3xl font-bold">Welcome to Electron Bones</h1>
 			<p className="text-muted-foreground">
 				A professional boilerplate for building cross-platform Electron
 				applications.
@@ -63,8 +63,16 @@ export function Home() {
 							description="Select your preferred application theme."
 						/>
 						<Link to={nav.settings.href} className="block">
-							<Button className="w-full">Go to Settings</Button>
+							<Button className="w-full mb-2">Go to Settings</Button>
 						</Link>
+						<Button
+							className="w-full"
+							onClick={() =>
+								window.electron.ipcRenderer.send('open-child-window')
+							}
+						>
+							Open Child Window
+						</Button>
 					</CardContent>
 				</Card>
 			</div>
