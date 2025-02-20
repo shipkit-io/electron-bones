@@ -1,4 +1,4 @@
-# Electron Hotplate 🔥
+# Electron Bones 🔥
 
 A batteries-included Electron boilerplate with React, TypeScript, and more. Based on the [Electron React Boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate), this project includes a demo app showcasing basic functionality and inter-process communication between the main and renderer processes.
 
