@@ -1,0 +1,10 @@
+{
+	"reject": [
+		"chalk",
+		"css-loader",
+		"electron",
+		"electron-store",
+		"electron-debug",
+		"eslint"
+	]
+}

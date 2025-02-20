@@ -12,3 +12,4 @@ if (fs.existsSync(appNodeModulesPath)) {
     fs.symlinkSync(appNodeModulesPath, erbNodeModulesPath, 'junction');
   }
 }
+ 
