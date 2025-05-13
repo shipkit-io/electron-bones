@@ -25,6 +25,7 @@ import {
 	CommandGroup,
 	CommandInput,
 	CommandItem,
+	CommandList,
 } from '@/components/ui/command';
 import {
 	Popover,
@@ -49,7 +50,7 @@ export function InputComboboxForm({
 	details,
 	content,
 }: {
-	items?: { value: string; label: string }[];
+	items: { value: string; label: string }[];
 	value?: string;
 	onChange?: (value: string) => void;
 	label?: string;
@@ -94,7 +95,7 @@ export function InputComboboxForm({
 												)}
 											>
 												{currentValue
-													? items?.find((item) => item.value === currentValue)
+													? items.find((item) => item.value === currentValue)
 															?.label
 													: placeholder || 'Select...'}
 												<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -106,31 +107,33 @@ export function InputComboboxForm({
 											<CommandInput
 												placeholder={searchMessage || 'Search...'}
 											/>
-											<CommandEmpty>
-												{noValueMessage || 'No results found.'}
-											</CommandEmpty>
-											<CommandGroup>
-												{items?.map((item) => (
-													<CommandItem
-														value={item.label}
-														key={item.value}
-														onSelect={() => {
-															form.setValue('itemValue', item.value);
-															onSubmit({ itemValue: item.value });
-														}}
-													>
-														<Check
-															className={cn(
-																'mr-2 h-4 w-4',
-																item.value === currentValue
-																	? 'opacity-100'
-																	: 'opacity-0',
-															)}
-														/>
-														{item.label}
-													</CommandItem>
-												))}
-											</CommandGroup>
+											<CommandList>
+												<CommandEmpty>
+													{noValueMessage || 'No results found.'}
+												</CommandEmpty>
+												<CommandGroup>
+													{items.map((item) => (
+														<CommandItem
+															value={item.label}
+															key={item.value}
+															onSelect={() => {
+																form.setValue('itemValue', item.value);
+																onSubmit({ itemValue: item.value });
+															}}
+														>
+															<Check
+																className={cn(
+																	'mr-2 h-4 w-4',
+																	item.value === currentValue
+																		? 'opacity-100'
+																		: 'opacity-0',
+																)}
+															/>
+															{item.label}
+														</CommandItem>
+													))}
+												</CommandGroup>
+											</CommandList>
 										</Command>
 									</PopoverContent>
 								</Popover>

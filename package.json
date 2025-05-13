@@ -119,6 +119,7 @@
 	"dependencies": {
 		"@aptabase/electron": "^0.3.1",
 		"@electron/notarize": "^2.5.0",
+		"@hookform/resolvers": "^3.9.0",
 		"@mapbox/react-colorpickr": "^10.3.0",
 		"@radix-ui/react-accordion": "^1.2.0",
 		"@radix-ui/react-alert-dialog": "^1.1.1",
@@ -169,7 +170,6 @@
 	},
 	"devDependencies": {
 		"@electron/rebuild": "^3.6.0",
-		"@hookform/resolvers": "^3.9.0",
 		"@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
 		"@svgr/webpack": "^8.1.0",
 		"@teamsupercell/typings-for-css-modules-loader": "^2.5.2",
