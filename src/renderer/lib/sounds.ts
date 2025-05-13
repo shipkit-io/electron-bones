@@ -41,7 +41,6 @@ const sounds: Record<string, { url: string; volume: number }> = {
 export const preload = (basepath = '') => {
 	console.warn(`Preloading sounds`);
 
-	let audio: HTMLAudioElement | undefined;
 	Object.keys(sounds).forEach((name) => {
 		if (!cache[name]) {
 			const sound = sounds[name];
@@ -52,11 +51,8 @@ export const preload = (basepath = '') => {
 			cache[name].crossOrigin = '*';
 			cache[name].volume = sound.volume;
 			cache[name].src = url;
-			audio = cache[name];
 		}
 	});
-
-	return audio;
 };
 
 export const play = ({ name, path }: { name: string; path?: string }) => {

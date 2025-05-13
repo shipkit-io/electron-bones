@@ -112,6 +112,7 @@ export function GlobalContextProvider({
 
 				// Setup listener to play sounds
 				window.electron.ipcRenderer.on(ipcChannels.PLAY_SOUND, (sound: any) => {
+					if (!settings.allowSounds) return;
 					play({ name: sound });
 				});
 			})

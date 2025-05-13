@@ -49,7 +49,7 @@ export function InputComboboxForm({
 	details,
 	content,
 }: {
-	items: { value: string; label: string }[];
+	items?: { value: string; label: string }[];
 	value?: string;
 	onChange?: (value: string) => void;
 	label?: string;
@@ -94,7 +94,7 @@ export function InputComboboxForm({
 												)}
 											>
 												{currentValue
-													? items.find((item) => item.value === currentValue)
+													? items?.find((item) => item.value === currentValue)
 															?.label
 													: placeholder || 'Select...'}
 												<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -110,7 +110,7 @@ export function InputComboboxForm({
 												{noValueMessage || 'No results found.'}
 											</CommandEmpty>
 											<CommandGroup>
-												{items.map((item) => (
+												{items?.map((item) => (
 													<CommandItem
 														value={item.label}
 														key={item.value}
