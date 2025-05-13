@@ -71,7 +71,7 @@ export function InputComboboxForm({
 	function onSubmit(data: z.infer<typeof FormSchema>) {
 		onChange?.(data.itemValue);
 	}
-
+	console.log(items);
 	return (
 		<Form {...form}>
 			<form className="space-y-6">
@@ -114,7 +114,7 @@ export function InputComboboxForm({
 												<CommandGroup>
 													{items.map((item) => (
 														<CommandItem
-															value={item.label}
+															value={item.value}
 															key={item.value}
 															onSelect={() => {
 																form.setValue('itemValue', item.value);

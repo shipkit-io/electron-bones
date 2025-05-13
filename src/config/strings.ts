@@ -2,8 +2,8 @@ export const $settings = {
 	title: 'Settings',
 	description: 'Manage your account settings and application preferences',
 	app: {
-		githubUrl: 'https://github.com/lacymorrow/electron-hotplate',
-		repo: 'lacymorrow/electron-hotplate',
+		githubUrl: 'https://github.com/lacymorrow/electron-bones',
+		repo: 'lacymorrow/electron-bones',
 		description: 'A boilerplate for Electron applications',
 	},
 	appearance: {

@@ -127,12 +127,12 @@ export const createMainWindow = async () => {
 		minHeight: 420,
 	};
 
-	if(is.windows){
+	if (is.windows) {
 		options.titleBarOverlay = {
 			color: getSetting('theme') === 'dark' ? '#000000' : '#ffffff',
 			symbolColor: String(getSetting('accentColor')) || '#000000',
-			height: 34
-		  }
+			height: 34,
+		};
 	}
 
 	const window = createWindow(options);
@@ -153,11 +153,17 @@ export const createMainWindow = async () => {
 };
 
 export const createChildWindow = async () => {
-	const window = createWindow({ frame: true });
+	const mainWindowBounds = windows.mainWindow?.getBounds();
+	const options: BrowserWindowConstructorOptions = {
+		frame: true,
+		x: mainWindowBounds ? mainWindowBounds.x + 60 : undefined,
+		y: mainWindowBounds ? mainWindowBounds.y + 60 : undefined,
+	};
+
+	const window = createWindow(options);
 
 	window.on('ready-to-show', () => {
 		window.show();
-		windows.mainWindow?.focus();
 	});
 
 	// Load the window

@@ -3,6 +3,7 @@ import { ipcChannels } from '../config/ipc-channels';
 import { SettingsType } from '../config/settings';
 import { CustomAcceleratorsType } from '../types/keyboard';
 import { getOS } from '../utils/getOS';
+import { createChildWindow } from './create-window';
 import kb from './keyboard';
 import { notification } from './notifications';
 import { rendererPaths } from './paths';
@@ -16,6 +17,7 @@ import {
 } from './store-actions';
 import { is } from './util';
 import { serializeMenu, triggerMenuItemById } from './utils/menu-utils';
+import windows from './windows';
 
 export default {
 	initialize() {
@@ -85,6 +87,15 @@ export default {
 		// Open a URL in the default browser
 		ipcMain.on(ipcChannels.OPEN_URL, (_event: any, url: string) => {
 			shell.openExternal(url);
+		});
+
+		// Open a child window
+		ipcMain.on(ipcChannels.OPEN_CHILD_WINDOW, async () => {
+			if (!windows.childWindow || windows.childWindow.isDestroyed()) {
+				windows.childWindow = await createChildWindow();
+			} else {
+				windows.childWindow.focus();
+			}
 		});
 	},
 };
