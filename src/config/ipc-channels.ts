@@ -4,6 +4,7 @@ export type Channels = string;
 // Main -> Renderer
 const APP_UPDATED = 'app-updated';
 const APP_NOTIFICATION = 'app-notification'; // to display a notification using the OS notification system
+const WINDOW_MAXIMIZED_CHANGE = 'window-maximized-change';
 
 const PRELOAD_SOUNDS = 'preload-sounds';
 const PLAY_SOUND = 'play-sound';
@@ -22,10 +23,17 @@ const TRIGGER_APP_MENU_ITEM_BY_ID = 'trigger-app-menu-item-by-id';
 const OPEN_URL = 'open-url';
 const OPEN_CHILD_WINDOW = 'open-child-window';
 
+// Window controls (renderer -> main)
+const WINDOW_MINIMIZE = 'window-minimize';
+const WINDOW_MAXIMIZE = 'window-maximize';
+const WINDOW_CLOSE = 'window-close';
+const WINDOW_IS_MAXIMIZED = 'window-is-maximized';
+
 export const ipcChannels = {
 	// main -> renderer
 	APP_NOTIFICATION,
 	APP_UPDATED,
+	WINDOW_MAXIMIZED_CHANGE,
 	PRELOAD_SOUNDS,
 	PLAY_SOUND,
 
@@ -41,4 +49,9 @@ export const ipcChannels = {
 	TRIGGER_APP_MENU_ITEM_BY_ID,
 	OPEN_URL,
 	OPEN_CHILD_WINDOW,
+
+	WINDOW_MINIMIZE,
+	WINDOW_MAXIMIZE,
+	WINDOW_CLOSE,
+	WINDOW_IS_MAXIMIZED,
 } as const;
