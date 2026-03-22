@@ -37,7 +37,9 @@ const onDownloadProgress = (progressObject: ProgressInfo) => {
 		Logger.info(message);
 
 		// Dock progress bar
-		windows.mainWindow?.setProgressBar(progressObject.percent / 100);
+		if (windows.mainWindow && !windows.mainWindow.isDestroyed()) {
+			windows.mainWindow.setProgressBar(progressObject.percent / 100);
+		}
 	} catch (error) {
 		Logger.error('onDownloadProgress', error);
 	}
@@ -68,7 +70,9 @@ const onUpdateAvailable = () => {
 
 const onUpdateDownloaded = () => {
 	try {
-		windows.mainWindow?.setProgressBar(-1);
+		if (windows.mainWindow && !windows.mainWindow.isDestroyed()) {
+			windows.mainWindow.setProgressBar(-1);
+		}
 		dock.setBadge('!');
 		notification({
 			title: 'CrossOver has been Updated',
@@ -79,6 +83,10 @@ const onUpdateDownloaded = () => {
 		Logger.error(error);
 	}
 };
+
+// Register event listeners once, outside the update function
+let listenersRegistered = false;
+let updateInterval: ReturnType<typeof setInterval> | null = null;
 
 const update = () => {
 	// We trycatch here because appx throws errors
@@ -91,23 +99,29 @@ const update = () => {
 	// 		Logger.info('Setting: Automatic Updates');
 
 	// 		autoUpdater.logger = Logger;
-	// 		autoUpdater.on('update-available', onUpdateAvailable);
 
-	// 		if (is.linux) {
-	// 			return;
+	// 		// Only register listeners once to prevent accumulation
+	// 		if (!listenersRegistered) {
+	// 			autoUpdater.on('update-available', onUpdateAvailable);
+
+	// 			if (!is.linux) {
+	// 				autoUpdater.on('download-progress', onDownloadProgress);
+	// 				autoUpdater.on('update-downloaded', onUpdateDownloaded);
+	// 			}
+
+	// 			listenersRegistered = true;
 	// 		}
 
-	// 		autoUpdater.on('download-progress', onDownloadProgress);
-
-	// 		autoUpdater.on('update-downloaded', onUpdateDownloaded);
-
-	// 		setInterval(() => {
-	// 			autoUpdater.checkForUpdates();
-	// 		}, FOUR_HOURS);
+	// 		// Only create one polling interval
+	// 		if (!updateInterval) {
+	// 			updateInterval = setInterval(() => {
+	// 				autoUpdater.checkForUpdates();
+	// 			}, FOUR_HOURS);
+	// 		}
 
 	// 		autoUpdater.checkForUpdatesAndNotify();
 	// 	}
-	
+
 	} catch (error) {
 		Logger.error(error);
 	}

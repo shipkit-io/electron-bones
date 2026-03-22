@@ -15,6 +15,7 @@ import {
 import { play, preload } from '@/renderer/lib/sounds';
 import { AppInfoType } from '@/types/app';
 import { CustomAcceleratorsType } from '@/types/keyboard';
+import { getNativeWindowBorderRadius } from '@/utils/platform';
 import { MenuItemConstructorOptions } from 'electron/renderer';
 import { toast } from 'sonner';
 
@@ -72,38 +73,44 @@ export function GlobalContextProvider({
 				.catch(console.error);
 		};
 
+		// Store unsubscribe functions for proper cleanup
+		const unsubscribers: Array<(() => void) | undefined> = [];
+
 		// Listen for messages from the main process
-		window.electron.ipcRenderer.on(ipcChannels.APP_UPDATED, async (data) => {
+		const unsubAppUpdated = window.electron.ipcRenderer.on(ipcChannels.APP_UPDATED, async (data) => {
 			console.log('APP_UPDATED', data);
 
 			await synchronizeAppState();
 		});
+		unsubscribers.push(unsubAppUpdated);
 
 		// Create notifications using the renderer
-		window.electron.ipcRenderer.on(
+		const unsubNotification = window.electron.ipcRenderer.on(
 			ipcChannels.APP_NOTIFICATION,
 			({ title, body, action }: any) => {
 				toast(title, {
 					...(body ? { description: body } : {}),
 					...(action ? { action } : {}),
-					// action: {
-					// 	label: 'Ok',
-					// 	onClick: () => {},
-					// },
 				});
-
-				// Renderer Web Notifications
-				// new Notification(title, {
-				// 	body,
-				// });
 			},
 		);
+		unsubscribers.push(unsubNotification);
 
 		// Get app info: name, version, paths, os - DOES NOT CHANGE
 		window.electron.ipcRenderer
 			.invoke(ipcChannels.GET_APP_INFO)
 			.then((info) => {
 				setAppInfo(info);
+
+				// Set native window border radius based on OS and version
+				if (info.platform) {
+					const root = window.document.documentElement;
+					root.style.setProperty(
+						'--window-border-radius',
+						getNativeWindowBorderRadius(info.platform),
+					);
+				}
+
 				return info;
 			})
 			.then(() => {
@@ -111,10 +118,18 @@ export function GlobalContextProvider({
 				preload();
 
 				// Setup listener to play sounds
-				window.electron.ipcRenderer.on(ipcChannels.PLAY_SOUND, (sound: any) => {
-					if (!settings.allowSounds) return;
-					play({ name: sound });
+				const unsubSound = window.electron.ipcRenderer.on(ipcChannels.PLAY_SOUND, (sound: any) => {
+					// Read latest settings via invoke to avoid stale closure
+					window.electron.ipcRenderer
+						.invoke(ipcChannels.GET_RENDERER_SYNC)
+						.then((res) => {
+							if (res?.settings?.allowSounds) {
+								play({ name: sound });
+							}
+						})
+						.catch(console.error);
 				});
+				unsubscribers.push(unsubSound);
 			})
 			.catch(console.error);
 
@@ -125,12 +140,8 @@ export function GlobalContextProvider({
 		window.electron.ipcRenderer.send(ipcChannels.RENDERER_READY);
 
 		return () => {
-			// Clean up listeners when the component unmounts
-			window.electron.ipcRenderer.removeAllListeners(ipcChannels.APP_UPDATED);
-			window.electron.ipcRenderer.removeAllListeners(ipcChannels.PLAY_SOUND);
-			window.electron.ipcRenderer.removeAllListeners(
-				ipcChannels.APP_NOTIFICATION,
-			);
+			// Clean up listeners using stored unsubscribe functions
+			unsubscribers.forEach((unsub) => unsub?.());
 		};
 	}, []);
 

@@ -47,9 +47,11 @@ const synchronizeApp = (changedSettings?: Partial<SettingsType>) => {
 		}
 	}
 
-	// Sync with renderer
+	// Sync with renderer — skip destroyed windows
 	forEachWindow((win) => {
-		win.webContents.send(ipcChannels.APP_UPDATED);
+		if (!win.isDestroyed()) {
+			win.webContents.send(ipcChannels.APP_UPDATED);
+		}
 	});
 };
 

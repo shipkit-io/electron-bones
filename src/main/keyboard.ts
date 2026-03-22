@@ -40,10 +40,12 @@ interface ShortcutType extends Electron.GlobalShortcut {
 }
 
 const registerKeyboardShortcuts = () => {
-	globalShortcut.unregisterAll();
-
 	// Register all shortcuts
 	const keybinds = store.get('keybinds');
+
+	// Collect all new shortcuts first, then swap atomically
+	const toRegister: Array<{ keybind: string; fn: () => void }> = [];
+
 	keyboardShortcuts.forEach((shortcut) => {
 		const { action, fn } = shortcut;
 		const keybind = keybinds[action];
@@ -57,11 +59,21 @@ const registerKeyboardShortcuts = () => {
 
 		// If a keybinds shortcut exists for this action
 		Logger.info(`Keybind for ${action} is ${keybind}`);
-		globalShortcut.register(keybind, () => {
-			// Do the thing
-			fn();
-		});
+		toRegister.push({ keybind, fn });
 	});
+
+	// Unregister old shortcuts and register new ones
+	globalShortcut.unregisterAll();
+
+	for (const { keybind, fn } of toRegister) {
+		try {
+			globalShortcut.register(keybind, () => {
+				fn();
+			});
+		} catch (error) {
+			Logger.error(`Failed to register shortcut ${keybind}:`, error);
+		}
+	}
 };
 
 const kb: ShortcutType = {

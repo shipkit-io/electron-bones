@@ -9,6 +9,7 @@ import {
 import Logger from 'electron-log/main';
 import path from 'path';
 import { APP_FRAME, APP_HEIGHT, APP_WIDTH } from '../config/config';
+import { ipcChannels } from '../config/ipc-channels';
 import { setupContextMenu } from './context-menu';
 import MenuBuilder from './menu';
 import { __resources } from './paths';
