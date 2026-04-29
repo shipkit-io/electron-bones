@@ -22,6 +22,12 @@ const TRIGGER_APP_MENU_ITEM_BY_ID = 'trigger-app-menu-item-by-id';
 const OPEN_URL = 'open-url';
 const OPEN_CHILD_WINDOW = 'open-child-window';
 
+const WINDOW_MAXIMIZED_CHANGE = 'window-maximized-change';
+const WINDOW_MINIMIZE = 'window-minimize';
+const WINDOW_MAXIMIZE = 'window-maximize';
+const WINDOW_CLOSE = 'window-close';
+const WINDOW_IS_MAXIMIZED = 'window-is-maximized';
+
 export const ipcChannels = {
 	// main -> renderer
 	APP_NOTIFICATION,
@@ -47,10 +53,4 @@ export const ipcChannels = {
 	WINDOW_MAXIMIZE,
 	WINDOW_CLOSE,
 	WINDOW_IS_MAXIMIZED,
-} as const;
-
-
-	TRIGGER_APP_MENU_ITEM_BY_ID,
-	OPEN_URL,
-	OPEN_CHILD_WINDOW,
 } as const;
