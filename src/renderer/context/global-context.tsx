@@ -15,6 +15,7 @@ import {
 import { play, preload } from '@/renderer/lib/sounds';
 import { AppInfoType } from '@/types/app';
 import { CustomAcceleratorsType } from '@/types/keyboard';
+import { RendererNotificationOptions } from '@/types/notification';
 import { MenuItemConstructorOptions } from 'electron/renderer';
 import { toast } from 'sonner';
 
@@ -58,8 +59,6 @@ export function GlobalContextProvider({
 	useEffect(() => {
 		// Create handler for receiving asynchronous messages from the main process
 		const synchronizeAppState = async () => {
-			console.log(ipcChannels.APP_UPDATED);
-
 			window.electron.ipcRenderer
 				.invoke(ipcChannels.GET_RENDERER_SYNC)
 				.then((res) => {
@@ -73,29 +72,28 @@ export function GlobalContextProvider({
 		};
 
 		// Listen for messages from the main process
-		window.electron.ipcRenderer.on(ipcChannels.APP_UPDATED, async (data) => {
-			console.log('APP_UPDATED', data);
-
+		window.electron.ipcRenderer.on(ipcChannels.APP_UPDATED, async () => {
 			await synchronizeAppState();
 		});
 
 		// Create notifications using the renderer
 		window.electron.ipcRenderer.on(
 			ipcChannels.APP_NOTIFICATION,
-			({ title, body, action }: any) => {
+			(...args: unknown[]) => {
+				const { title, body, action } = args[0] as RendererNotificationOptions;
 				toast(title, {
 					...(body ? { description: body } : {}),
 					...(action ? { action } : {}),
-					// action: {
-					// 	label: 'Ok',
-					// 	onClick: () => {},
-					// },
 				});
+			},
+		);
 
-				// Renderer Web Notifications
-				// new Notification(title, {
-				// 	body,
-				// });
+		// Setup listener to play sounds
+		window.electron.ipcRenderer.on(
+			ipcChannels.PLAY_SOUND,
+			(...args: unknown[]) => {
+				if (!settings.allowSounds) return;
+				play({ name: args[0] as string });
 			},
 		);
 
@@ -104,17 +102,7 @@ export function GlobalContextProvider({
 			.invoke(ipcChannels.GET_APP_INFO)
 			.then((info) => {
 				setAppInfo(info);
-				return info;
-			})
-			.then(() => {
-				// SOUNDS
 				preload();
-
-				// Setup listener to play sounds
-				window.electron.ipcRenderer.on(ipcChannels.PLAY_SOUND, (sound: any) => {
-					if (!settings.allowSounds) return;
-					play({ name: sound });
-				});
 			})
 			.catch(console.error);
 

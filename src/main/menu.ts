@@ -91,7 +91,7 @@ export default class MenuBuilder {
 				label: 'Quit on Close',
 				type: 'checkbox',
 				id: 'quitOnWindowClose',
-				checked: getSetting('quitOnWindowClose'),
+				checked: getSetting('quitOnWindowClose') as boolean,
 				click: () => {
 					setSettings({
 						quitOnWindowClose: !getSetting('quitOnWindowClose'),
