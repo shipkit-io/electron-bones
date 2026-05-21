@@ -6,7 +6,10 @@
 	"description": "A batteries-included Electron boilerplate.",
 	"license": "CC-BY-NC-SA-4.0",
 	"copyright": "Copyright © Lacy Morrow",
-	"repository": "lacymorrow/electron-bones",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/lacymorrow/electron-bones.git"
+	},
 	"homepage": "https://lacymorrow.github.io/electron-bones",
 	"keywords": [
 		"electron",
