@@ -1,13 +1,20 @@
-import { app, dialog as electronDialog } from 'electron';
+import { app, dialog as electronDialog, MessageBoxReturnValue } from 'electron';
 import path from 'path';
 import { debugInfo, is } from './util';
 
-const validButtonIndex = (result: any) =>
-	result?.response && typeof result.response === 'number'
+const validButtonIndex = (result: MessageBoxReturnValue | number) =>
+	typeof result === 'object' && typeof result.response === 'number'
 		? result.response
-		: result;
+		: (result as number);
 
-const showAboutWindow = (options: any = {}) => {
+interface AboutWindowOptions {
+	icon?: string;
+	copyright?: string;
+	text?: string;
+	website?: string;
+}
+
+const showAboutWindow = (options: AboutWindowOptions = {}) => {
 	// TODO: When https://github.com/electron/electron/issues/18918 is fixed,
 	// these defaults should not need to be set for Linux.
 	// TODO: The defaults are standardized here, instead of being set in
@@ -16,7 +23,7 @@ const showAboutWindow = (options: any = {}) => {
 	const appName = app.getName();
 	const appVersion = app.getVersion();
 
-	const aboutPanelOptions: any = {
+	const aboutPanelOptions: Electron.AboutPanelOptionsOptions = {
 		applicationName: appName,
 		applicationVersion: appVersion,
 	};
@@ -25,14 +32,10 @@ const showAboutWindow = (options: any = {}) => {
 		aboutPanelOptions.iconPath = options.icon;
 	}
 
-	if (options.copyright) {
-		aboutPanelOptions.copyright = options.copyright;
-	}
-
-	if (options.text) {
-		aboutPanelOptions.copyright = `${options.copyright || ''}\n\n${
-			options.text
-		}`;
+	if (options.copyright || options.text) {
+		aboutPanelOptions.copyright = [options.copyright, options.text]
+			.filter(Boolean)
+			.join('\n\n');
 	}
 
 	if (options.website) {

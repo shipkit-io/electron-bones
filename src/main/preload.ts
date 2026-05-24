@@ -49,11 +49,16 @@ const electronHandler = {
 				ipcRenderer.removeListener(channel, subscription);
 			};
 		},
-		once(channel: string, func: (...args: unknown[]) => void) {
+		once(channel: string, func: (...args: unknown[]) => void): (() => void) | undefined {
 			if (!channels.includes(channel)) {
-				return;
+				return undefined;
 			}
-			ipcRenderer.once(channel, (_event, ...args) => func(...args));
+			const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
+				func(...args);
+			ipcRenderer.once(channel, subscription);
+			return () => {
+				ipcRenderer.removeListener(channel, subscription);
+			};
 		},
 		removeAllListeners(channel: string) {
 			ipcRenderer.removeAllListeners(channel);
