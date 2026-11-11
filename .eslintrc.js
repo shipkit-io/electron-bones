@@ -6,6 +6,26 @@ module.exports = {
 	rules: {
 		// A temporary hack related to IDE not resolving correct package.json
 		// 'import/no-extraneous-dependencies': 'off',
+		// eslint-plugin-compat (via `plugin:compat/recommended` in eslint-config-erb)
+		// is a *browser* compatibility linter. It resolves the `browserslist` key in
+		// package.json, which `browserslist-config-erb` renders as the exact installed
+		// Electron version (e.g. `electron 40.10.6`). browserslist truncates that to a
+		// minor and looks it up in electron-to-chromium; a missing key is a hard throw,
+		// so a data package older than the installed Electron takes down the whole lint
+		// run with exit 2 -- before `tsc` and `npm test` ever get to run. That is what
+		// kept `test.yml` red on main from 2026-05-21 to 2026-11-11 (LAC-7227).
+		//
+		// The rule is off rather than re-pointed because Electron ships its own pinned
+		// Chromium: there is no unknown browser for it to warn about, so it carries no
+		// value here to offset that cost. It is also the only lint-time reader of
+		// browserslist, so switching it off removes the failure class outright instead
+		// of resetting the clock until the next Electron bump.
+		//
+		// The `browserslist` key itself stays: autoprefixer still reads it at *build*
+		// time, where it must stay pinned to the Chromium this app actually runs, and
+		// where a stale-data throw is loud and appropriate rather than silent.
+		'compat/compat': 'off',
+
 		'react/react-in-jsx-scope': 'off',
 		'react/jsx-filename-extension': 'off',
 		'import/extensions': 'off',
