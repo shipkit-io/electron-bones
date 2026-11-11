@@ -179,6 +179,7 @@
 		"react-wrap-balancer": "^1.1.1",
 		"recharts": "^2.15.1",
 		"sonner": "^1.7.4",
+		"source-map-support": "^0.5.21",
 		"tailwind-merge": "^2.5.2",
 		"tailwindcss-animate": "^1.0.7",
 		"uuid": "^10.0.0",

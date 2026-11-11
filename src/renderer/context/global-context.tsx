@@ -132,6 +132,17 @@ export function GlobalContextProvider({
 				ipcChannels.APP_NOTIFICATION,
 			);
 		};
+		// `settings.allowSounds` is read inside the PLAY_SOUND listener registered
+		// above, so this closure captures its mount-time value and the sound toggle
+		// does not take effect until restart. That is a real bug, tracked as
+		// LAC-7764 with the ref-based fix and a regression test.
+		//
+		// It is NOT fixed by adding the dependency, which is what the rule suggests:
+		// this effect also registers the APP_UPDATED / APP_NOTIFICATION listeners and
+		// sends RENDERER_READY, so re-running it would duplicate every handler and
+		// play each sound N times. Suppressed rather than absorbed into LAC-7227 so a
+		// CI repair does not quietly ship a renderer behaviour change.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// Electron API functions

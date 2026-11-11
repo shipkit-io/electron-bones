@@ -2,12 +2,12 @@ import { SettingsJson } from '@/renderer/components/views/settings/SettingsJson'
 import { SettingsAbout } from '@/renderer/components/views/settings/about/SettingsAbout';
 import { SettingsAppearance } from '@/renderer/components/views/settings/appearance/SettingsAppearance';
 import {
-    BellIcon,
-    BlendingModeIcon,
-    GearIcon,
-    IdCardIcon,
-    ImageIcon,
-    KeyboardIcon,
+	BellIcon,
+	BlendingModeIcon,
+	GearIcon,
+	IdCardIcon,
+	ImageIcon,
+	KeyboardIcon,
 } from '@radix-ui/react-icons';
 
 import { SettingsApplication } from '@/renderer/components/views/settings/general/SettingsApplication';

@@ -53,6 +53,30 @@ module.exports = {
 		'react/prop-types': 'off',
 		'react/require-default-props': 'off',
 	},
+	overrides: [
+		{
+			// Build tooling and main-process code legitimately import devDependencies.
+			// `electron` is a devDependency on purpose in electron-react-boilerplate:
+			// the runtime Electron is supplied by electron-builder into the packaged
+			// app, never bundled out of node_modules. Webpack configs and .erb scripts
+			// are likewise never shipped. The rule stays *on* with `devDependencies`
+			// allowed rather than switched off, so a genuinely phantom import is still
+			// caught here (LAC-7227).
+			files: [
+				'.erb/**/*.js',
+				'.erb/**/*.ts',
+				'*.config.js',
+				'*.config.ts',
+				'src/main/**/*.ts',
+			],
+			rules: {
+				'import/no-extraneous-dependencies': [
+					'error',
+					{ devDependencies: true },
+				],
+			},
+		},
+	],
 	parserOptions: {
 		ecmaVersion: 2022,
 		sourceType: 'module',

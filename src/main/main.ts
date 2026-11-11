@@ -31,7 +31,6 @@ app
 // LAUNCH THE APP
 startup();
 
-
 // See the idle() function in src/main/startup.ts
 // it's called in the ipcMain.on(ipcChannels.RENDERER_READY) listener
 // when the renderer process is ready
