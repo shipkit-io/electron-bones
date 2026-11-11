@@ -5,7 +5,11 @@ import { NotificationOptions } from '@/types/notification';
 import { ipcChannels } from '../config/ipc-channels';
 import { SettingsType } from '../config/settings';
 
-const channels = Object.values(ipcChannels);
+// Typed as string[] on purpose: this is the contextBridge allowlist and the whole
+// point is to validate an untrusted `string` against it. Left as the inferred
+// literal-union array, every `channels.includes(channel)` below is TS2345
+// (LAC-7227). The runtime check is unchanged.
+const channels: string[] = Object.values(ipcChannels);
 
 const electronHandler = {
 	os: getOS(),
@@ -22,8 +26,7 @@ const electronHandler = {
 	windowMinimize: () => ipcRenderer.send(ipcChannels.WINDOW_MINIMIZE),
 	windowMaximize: () => ipcRenderer.send(ipcChannels.WINDOW_MAXIMIZE),
 	windowClose: () => ipcRenderer.send(ipcChannels.WINDOW_CLOSE),
-	windowIsMaximized: () =>
-		ipcRenderer.invoke(ipcChannels.WINDOW_IS_MAXIMIZED),
+	windowIsMaximized: () => ipcRenderer.invoke(ipcChannels.WINDOW_IS_MAXIMIZED),
 	ipcRenderer: {
 		invoke(channel: string, ...args: unknown[]) {
 			if (!channels.includes(channel)) {

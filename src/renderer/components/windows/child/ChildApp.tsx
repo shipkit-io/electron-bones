@@ -1,4 +1,4 @@
-import { Badge } from '@/components/ui/badge';
+import { Badge, type BadgeProps } from '@/components/ui/badge';
 import {
 	Card,
 	CardContent,
@@ -10,22 +10,22 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useGlobalContext } from '@/renderer/context/global-context';
 import '@/renderer/styles/globals.scss';
 
+// `success` was passed as a Badge variant but no such variant exists here, and
+// no success token is defined in the Tailwind config or the stylesheets. So a
+// `true` rendered an unstyled badge (cva returns only the base classes for an
+// unknown variant) and tripped TS2322. Map onto variants that do exist; adding
+// a real success token is a design decision, not a CI fix (LAC-7227).
+function settingVariant(value: unknown): BadgeProps['variant'] {
+	if (typeof value !== 'boolean') return 'default';
+	return value ? 'secondary' : 'destructive';
+}
+
 // Component to display a single setting
 function SettingItem({ name, value }: { name: string; value: any }) {
 	return (
 		<div className="flex justify-between items-center py-3 border-b last:border-b-0">
 			<span className="font-medium">{name}</span>
-			<Badge
-				variant={
-					typeof value === 'boolean'
-						? value
-							? 'success'
-							: 'destructive'
-						: 'default'
-				}
-			>
-				{value.toString()}
-			</Badge>
+			<Badge variant={settingVariant(value)}>{value.toString()}</Badge>
 		</div>
 	);
 }
@@ -42,7 +42,7 @@ function ChildApp() {
 					</CardTitle>
 					<CardDescription>
 						View and manage your application settings. These settings affect
-						various aspects of the application's behavior and appearance.
+						various aspects of the application&apos;s behavior and appearance.
 					</CardDescription>
 				</CardHeader>
 				<CardContent>

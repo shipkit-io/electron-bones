@@ -2,7 +2,6 @@
 import {
 	BrowserWindow,
 	BrowserWindowConstructorOptions,
-	IpcMainEvent,
 	app,
 	shell,
 } from 'electron';
@@ -74,8 +73,10 @@ const createWindow = (opts?: BrowserWindowConstructorOptions) => {
 
 	const browserWindow = new BrowserWindow(options);
 
-	browserWindow.on('unresponsive', (event: IpcMainEvent) => {
-		Logger.error(`Window unresponsive: ${event.sender}`);
+	// `unresponsive` is emitted with no arguments, so the previous handler's
+	// `event.sender` threw a TypeError inside the error path itself (LAC-7227).
+	browserWindow.on('unresponsive', () => {
+		Logger.error(`Window unresponsive: ${browserWindow.getTitle()}`);
 	});
 
 	browserWindow.webContents.on('did-fail-load', (event: any) => {

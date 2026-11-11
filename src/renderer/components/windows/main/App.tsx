@@ -2,10 +2,10 @@
 import { MainLayout } from '@/renderer/components/layout/MainLayout';
 import { Home } from '@/renderer/components/views/Home';
 import {
-    Route,
-    RouterProvider,
-    createHashRouter,
-    createRoutesFromElements,
+	Route,
+	RouterProvider,
+	createHashRouter,
+	createRoutesFromElements,
 } from 'react-router-dom';
 
 import SettingsLayout from '@/renderer/components/layout/SettingsLayout';

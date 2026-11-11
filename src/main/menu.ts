@@ -351,6 +351,6 @@ export default class MenuBuilder {
 export const setupDockMenu = () => {
 	if (!is.macos) return;
 	const dockMenu = Menu.buildFromTemplate([aboutMenuItem, quitMenuItem]);
-	app.dock.setMenu(dockMenu);
+	app.dock?.setMenu(dockMenu);
 	dock.initialize();
 };
