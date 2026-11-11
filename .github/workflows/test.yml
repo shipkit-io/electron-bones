@@ -6,16 +6,21 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
 
+    # Was set on the single combined step this file used to have; kept at job
+    # level so splitting that step preserves the environment for all of them.
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node.js and NPM
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: npm
@@ -24,10 +29,20 @@ jobs:
         run: |
           npm install
 
-      - name: npm test
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npm run lint
-          npm exec tsc
-          npm test
+      # One step each, so a red check names the stage that failed instead of
+      # making you read the log to find out (LAC-7227).
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm exec tsc
+
+      # `tsc` passing does not mean webpack builds: loaders, scss, asset
+      # resolution and the path aliases are all configured separately. This is
+      # the repo's only build verification right now, because every run of
+      # build.yml is `skipped` by a stale `repository_owner` guard (LAC-7765).
+      - name: Build
+        run: npm run build
+
+      - name: Unit tests
+        run: npm test
