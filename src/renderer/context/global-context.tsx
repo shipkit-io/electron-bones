@@ -5,7 +5,13 @@
 // todo: add os here
 
 import { ipcChannels } from '@/config/ipc-channels';
-import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+} from 'react';
 
 import {
 	DEFAULT_KEYBINDS,
@@ -54,6 +60,13 @@ export function GlobalContextProvider({
 
 	const [keybinds, setCurrentKeybinds] =
 		React.useState<CustomAcceleratorsType>(DEFAULT_KEYBINDS);
+
+	// The PLAY_SOUND listener is registered once on mount, so it reads the live
+	// toggle through a ref instead of closing over the mount-time `settings`.
+	const allowSoundsRef = useRef(settings.allowSounds);
+	useEffect(() => {
+		allowSoundsRef.current = settings.allowSounds;
+	}, [settings.allowSounds]);
 
 	useEffect(() => {
 		// Create handler for receiving asynchronous messages from the main process
@@ -112,7 +125,7 @@ export function GlobalContextProvider({
 
 				// Setup listener to play sounds
 				window.electron.ipcRenderer.on(ipcChannels.PLAY_SOUND, (sound: any) => {
-					if (!settings.allowSounds) return;
+					if (!allowSoundsRef.current) return;
 					play({ name: sound });
 				});
 			})
@@ -132,17 +145,6 @@ export function GlobalContextProvider({
 				ipcChannels.APP_NOTIFICATION,
 			);
 		};
-		// `settings.allowSounds` is read inside the PLAY_SOUND listener registered
-		// above, so this closure captures its mount-time value and the sound toggle
-		// does not take effect until restart. That is a real bug, tracked as
-		// LAC-7764 with the ref-based fix and a regression test.
-		//
-		// It is NOT fixed by adding the dependency, which is what the rule suggests:
-		// this effect also registers the APP_UPDATED / APP_NOTIFICATION listeners and
-		// sends RENDERER_READY, so re-running it would duplicate every handler and
-		// play each sound N times. Suppressed rather than absorbed into LAC-7227 so a
-		// CI repair does not quietly ship a renderer behaviour change.
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// Electron API functions
