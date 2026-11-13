@@ -336,8 +336,7 @@
 				"apk",
 				"deb",
 				"freebsd",
-				"pacman",
-				"rpm"
+				"pacman"
 			],
 			"category": "Development;Building"
 		},
