@@ -1,11 +1,11 @@
 import { Separator } from '@/components/ui/separator';
 import { $settings } from '@/config/strings';
-import { ScrollArea } from '@/renderer/components/ui/ScrollPane';
-import { SidebarNav } from '@/renderer/components/ui/SidebarNav';
 import { settingsNavItems } from '@/renderer/config/nav';
 import { ResetIcon } from '@radix-ui/react-icons';
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { SidebarNav } from './SidebarNav';
+import { ScrollArea } from './ScrollPane';
 
 interface SettingsLayoutProps {
 	children?: React.ReactNode;

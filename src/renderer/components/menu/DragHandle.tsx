@@ -3,7 +3,7 @@ import React from 'react';
 
 type HTMLProps = React.HTMLProps<HTMLDivElement>;
 
-export const DragHandle: React.FC<HTMLProps> = (props) => {
+export function DragHandle(props: HTMLProps) {
 	return (
 		<div
 			className="drag cursor-move flex items-center justify-center"
@@ -13,4 +13,4 @@ export const DragHandle: React.FC<HTMLProps> = (props) => {
 			<DragHandleDots1Icon />
 		</div>
 	);
-};
+}

@@ -1,8 +1,7 @@
 module.exports = {
 	extends: 'erb',
 	plugins: ['@typescript-eslint'],
-	// Ignore shadcn/ui components
-	ignorePatterns: ['**/components/ui/**', '**/renderer/lib/**'],
+	ignorePatterns: ['**/renderer/lib/**'],
 	rules: {
 		// A temporary hack related to IDE not resolving correct package.json
 		// 'import/no-extraneous-dependencies': 'off',
@@ -54,6 +53,22 @@ module.exports = {
 		'react/require-default-props': 'off',
 	},
 	overrides: [
+		{
+			// shadcn/ui output is linted and formatted like everything else, minus
+			// the idioms the generator emits on purpose: declaration order inside a
+			// file, Context values built inline, `cmdk-*` attributes, and headings
+			// that take their content as children. Everything else stays on (LAC-7769).
+			files: ['src/components/ui/**/*.tsx'],
+			rules: {
+				'no-use-before-define': 'off',
+				'react/jsx-no-constructed-context-values': 'off',
+				'react/no-unknown-property': [
+					'error',
+					{ ignore: ['cmdk-input-wrapper'] },
+				],
+				'jsx-a11y/heading-has-content': 'off',
+			},
+		},
 		{
 			// Build tooling and main-process code legitimately import devDependencies.
 			// `electron` is a devDependency on purpose in electron-react-boilerplate:

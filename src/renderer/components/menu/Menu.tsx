@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils';
 import { useGlobalContext } from '@/renderer/context/global-context';
 import { MenuItemConstructorOptions } from 'electron/renderer';
 import { v4 as uuidv4 } from 'uuid';
-import { DragHandle } from '../ui/DragHandle';
+import { DragHandle } from './DragHandle';
 
 export function Menu({ className }: { className?: string }) {
 	const { app, appMenu } = useGlobalContext();
