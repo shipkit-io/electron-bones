@@ -4,12 +4,15 @@ on:
   push:
     branches:
       - main
+  # Lets a branch run the packaging build by hand before it reaches main.
+  workflow_dispatch:
 
 jobs:
   build-mac-windows:
-    # To enable auto publishing to github, update your electron publisher
-    # config in package.json > "build" and remove the conditional below
-    if: ${{ github.repository_owner == 'lacymorrow' }}
+    # Keeps forks from running a packaging build. Compare the full repo name,
+    # not the owner: when this repo last moved orgs the old owner check never
+    # matched again and every run was silently `skipped` (LAC-7765).
+    if: ${{ github.repository == 'shipkit-io/electron-bones' }}
 
     runs-on: ${{ matrix.os }}
 
@@ -19,10 +22,10 @@ jobs:
 
     steps:
       - name: Checkout git repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node and NPM
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
@@ -34,9 +37,9 @@ jobs:
           npm run package:mw
 
       - name: Archive build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: release
+          name: release-mac-windows
           path: |
             release/build
             !release/**/builder*
@@ -45,9 +48,10 @@ jobs:
             !release/**/win*
 
   build-linux:
-    # To enable auto publishing to github, update your electron publisher
-    # config in package.json > "build" and remove the conditional below
-    if: ${{ github.repository_owner == 'lacymorrow' }}
+    # Keeps forks from running a packaging build. Compare the full repo name,
+    # not the owner: when this repo last moved orgs the old owner check never
+    # matched again and every run was silently `skipped` (LAC-7765).
+    if: ${{ github.repository == 'shipkit-io/electron-bones' }}
 
     runs-on: ${{ matrix.os }}
 
@@ -57,10 +61,10 @@ jobs:
 
     steps:
       - name: Checkout git repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node and NPM
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
@@ -75,9 +79,9 @@ jobs:
           npm run package:linux
 
       - name: Archive build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: release
+          name: release-linux
           path: |
             release/build
             !release/**/builder*
