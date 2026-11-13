@@ -2,13 +2,14 @@
 
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import type { ElementType, HTMLAttributes } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
+interface SidebarNavProps extends HTMLAttributes<HTMLElement> {
 	items: {
 		href: string;
 		title: string;
-		icon?: React.ElementType;
+		icon?: ElementType;
 	}[];
 }
 

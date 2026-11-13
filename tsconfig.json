@@ -25,7 +25,6 @@
 		"release/build",
 		"release/app/dist",
 		".erb/dll",
-		"src/renderer/lib",
-		"**/components/ui"
+		"src/renderer/lib"
 	]
 }
